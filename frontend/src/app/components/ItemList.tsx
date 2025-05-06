@@ -6,21 +6,29 @@ interface Item {
   
   interface ItemListProps {
     items: Item[];
-    onDelete: (itemId: number) => void;
+    onDelete: (id: number) => void;
+    onEdit: (item: Item) => void;
   }
   
-  export default function ItemList({ items, onDelete }: ItemListProps) {
+  const ItemList = ({ items, onDelete, onEdit }: ItemListProps) => {
     return (
-      <div>
-        <h2>Lista de Items</h2>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <span>{item.name}: {item.description}</span>
-              <button onClick={() => onDelete(item.id)}>Eliminar</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            <div>
+              <strong>{item.name}</strong>
+              <p>{item.description}</p>
+            </div>
+            <div>
+              <button onClick={() => onDelete(item.id)}>Delete</button>
+              <button className="edit-button" onClick={() => onEdit(item)}>
+                Edit
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     );
-  }
+  };
+  
+  export default ItemList;

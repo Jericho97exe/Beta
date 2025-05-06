@@ -22,3 +22,18 @@ def delete_item(db: Session, item_id: int):
         db.commit()
         return db_item
     return None
+
+# Actualizar un item por su ID
+def update_item(db: Session, item_id: int, item: schemas.ItemUpdate):
+    db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
+    if db_item:
+        db_item.name = item.name
+        db_item.description = item.description
+        db.commit()
+        db.refresh(db_item)
+        return db_item
+    return None
+
+# Contar el total de items
+def count_items(db: Session):
+    return db.query(models.Item).count()

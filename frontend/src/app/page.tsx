@@ -108,6 +108,7 @@ export default function Home() {
 import { useState, useEffect } from 'react';
 import ItemList from "./components/ItemList";
 
+
 interface Item {
   id: number;
   name: string;
@@ -118,11 +119,17 @@ export default function Home() {
   const [items, setItems] = useState<Item[]>([]);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [editItem, setEditItem] = useState<Item | null>(null);
+  const [itemCount, setItemCount] = useState<number>(0);
 
   useEffect(() => {
+    // Fetch items on component mount
     fetch('http://localhost:8000/items/')
       .then((res) => res.json())
-      .then((data: Item[]) => setItems(data));
+      .then((data: Item[]) => {
+        setItems(data);
+        setItemCount(data.length); // Set the item count
+      });
   }, []);
 
   const createItem = async () => {
@@ -135,6 +142,7 @@ export default function Home() {
     });
     const newItem: Item = await response.json();
     setItems([...items, newItem]);
+    setItemCount(itemCount + 1); // Increment item count
   };
 
   const deleteItem = async (itemId: number) => {
@@ -142,17 +150,42 @@ export default function Home() {
       method: 'DELETE',
     });
     if (response.ok) {
-      setItems(items.filter(item => item.id !== itemId));  // Elimina el item de la lista localmente
+      setItems(items.filter(item => item.id !== itemId));
+      setItemCount(itemCount - 1); // Decrease item count
       console.log('Item eliminado');
     } else {
       console.error('Error al eliminar el item');
     }
   };
 
+  const updateItem = async () => {
+    if (editItem) {
+      const response = await fetch(`http://localhost:8000/items/${editItem.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: editItem.name,
+          description: editItem.description,
+        }),
+      });
+      const updatedItem = await response.json();
+      setItems(items.map(item => (item.id === updatedItem.id ? updatedItem : item)));
+      setEditItem(null);
+    }
+  };
+
+  const handleEditClick = (item: Item) => {
+    setEditItem(item); // Set the item to be edited
+    setName(item.name);
+    setDescription(item.description);
+  };
+
   return (
-    <div>
+    <div className="container">
       <h1>Items</h1>
-      <div>
+      <div className="form-container">
         <input
           type="text"
           placeholder="Name"
@@ -165,9 +198,20 @@ export default function Home() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button onClick={createItem}>Create Item</button>
+        <button onClick={editItem ? updateItem : createItem}>
+          {editItem ? 'Update Item' : 'Create Item'}
+        </button>
       </div>
-        <ItemList items={items} onDelete={deleteItem} />
+
+      <div className="counter">
+        <p>Total items: {itemCount}</p>
+      </div>
+
+      <ItemList
+        items={items}
+        onDelete={deleteItem}
+        onEdit={handleEditClick}
+      />
     </div>
   );
 }
