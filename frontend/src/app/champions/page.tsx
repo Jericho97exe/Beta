@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { ChampionCard } from "@/components/champion-card"
-import { SearchBar } from "@/components/search-bar"
+import { ChampionCard } from "@/app/components/champion-cart"
+import { SearchBar } from "@/app/components/search-bar"
 
 export default async function ChampionsPage() {
   // En una implementación real, estos datos vendrían de la API de Riot

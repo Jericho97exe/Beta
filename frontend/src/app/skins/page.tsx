@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { SearchBar } from "@/components/search-bar"
+import { SearchBar } from "@/app/components/search-bar"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 
