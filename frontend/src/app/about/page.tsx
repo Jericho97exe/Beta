@@ -1,12 +1,12 @@
 import { MainSidebar } from "@/components/main-sidebar"
-import { CartPage } from "@/components/cart-page"
+import { AboutPage } from "@/components/about-page"
 
-export default function Cart() {
+export default function About() {
   return (
     <div className="flex h-screen">
       <MainSidebar />
       <main className="flex-1 overflow-auto">
-        <CartPage />
+        <AboutPage />
       </main>
     </div>
   )
