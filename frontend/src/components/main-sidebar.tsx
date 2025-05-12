@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { ShoppingCart, Store, Info, Gamepad2, ClipboardList } from "lucide-react"
+import { ShoppingCart, Store, Info, List, ClipboardList } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "./sidebar-provider"
 import { Button } from "@/components/ui/button"
@@ -25,7 +25,7 @@ export function MainSidebar() {
     },
     {
       label: "Product",
-      icon: Gamepad2,
+      icon: List,
       href: "/product",
       active: pathname === "/product",
       disabled: !selectedProduct,
@@ -55,7 +55,7 @@ export function MainSidebar() {
   return (
     <div className="flex h-screen flex-col border-r bg-background">
       <div className="flex h-14 items-center border-b px-4">
-        <h2 className="text-lg font-semibold">Game Store</h2>
+        <h2 className="text-lg font-semibold">Feminine Elegance</h2>
       </div>
       <div className="flex-1 overflow-auto py-2">
         <nav className="grid gap-1 px-2">
