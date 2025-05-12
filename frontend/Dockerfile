@@ -14,6 +14,7 @@ FROM node:18
 WORKDIR /app
 COPY --from=builder /app ./
 
+
 # Asegúrate de que 'next start' esté disponible
 RUN npm install --omit=dev
 

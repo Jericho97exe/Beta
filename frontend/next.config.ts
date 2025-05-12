@@ -1,21 +1,17 @@
-import type { NextConfig } from "next";
+// next.config.js
 
-const nextConfig: NextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ['fakestoreapi.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'fakestoreapi.com',
-        pathname: '**',
+        port: '',
+        pathname: '/img/**',
       },
     ],
-    unoptimized: true,
   },
 };
+
+module.exports = nextConfig;

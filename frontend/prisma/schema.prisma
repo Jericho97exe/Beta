@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,14 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          Int     @id @default(autoincrement())
+// Modelo de Usuario
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  orders    Order[]
+}
+
+// Modelo de Orden/Compra
+model Order {
+  id          String       @id @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  total       Float
+  status      OrderStatus  @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  orderItems  OrderItem[]
+}
+
+// Modelo de Item de Orden
+model OrderItem {
+  id          String    @id @default(uuid())
+  orderId     String
+  order       Order     @relation(fields: [orderId], references: [id])
+  productId   Int
   title       String
   price       Float
-  description String
-  category    String
-  image       String
-  rate        Float
-  count       Int
-  quantity    Int?    // Campo opcional
+  quantity    Int
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Enumeración para el estado de la orden
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
 }

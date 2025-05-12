@@ -3,6 +3,7 @@
 import { useState } from "react"
 import type React from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Product } from "@/types/product"
@@ -37,10 +38,10 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full">
       <div className="relative pt-[100%] bg-white">
-        {/* Usar img en lugar de Image */}
-        <img
+        <Image
           src={product.image || "/placeholder.svg"}
           alt={product.title}
+          fill
           className="absolute inset-0 w-full h-full object-contain p-4"
         />
         <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all flex items-center justify-center opacity-0 hover:opacity-100">

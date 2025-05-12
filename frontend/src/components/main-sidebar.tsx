@@ -1,15 +1,17 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { ShoppingCart, Store, Info, List } from "lucide-react"
+import { ShoppingCart, Store, Info, Gamepad2, ClipboardList } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "./sidebar-provider"
 import { Button } from "@/components/ui/button"
+//import { useSession } from "next-auth/react"
 
 export function MainSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const { selectedProduct, cartItems } = useSidebar()
+  //const { status } = useSession()
 
   // Calcular el total de artículos en el carrito
   const totalItems = cartItems.reduce((total, item) => total + (item.quantity || 1), 0)
@@ -23,7 +25,7 @@ export function MainSidebar() {
     },
     {
       label: "Product",
-      icon: List,
+      icon: Gamepad2,
       href: "/product",
       active: pathname === "/product",
       disabled: !selectedProduct,
@@ -36,6 +38,13 @@ export function MainSidebar() {
       badge: totalItems > 0 ? totalItems : null,
     },
     {
+      label: "My Orders",
+      icon: ClipboardList,
+      href: "/orders",
+      active: pathname === "/orders" || pathname.startsWith("/orders/"),
+      disabled: status !== "authenticated",
+    },
+    {
       label: "About Us",
       icon: Info,
       href: "/about",
@@ -46,7 +55,7 @@ export function MainSidebar() {
   return (
     <div className="flex h-screen flex-col border-r bg-background">
       <div className="flex h-14 items-center border-b px-4">
-        <h2 className="text-lg font-semibold">Feminine Elegance</h2>
+        <h2 className="text-lg font-semibold">Game Store</h2>
       </div>
       <div className="flex-1 overflow-auto py-2">
         <nav className="grid gap-1 px-2">

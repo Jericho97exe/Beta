@@ -1,21 +1,31 @@
 from pydantic import BaseModel
 
-# Esquema base que contiene los campos comunes para ItemCreate y ItemUpdate
 class ItemBase(BaseModel):
     name: str
     description: str
 
-# Esquema para la creación de un item
 class ItemCreate(ItemBase):
     pass
 
-# Esquema para la actualización de un item
-class ItemUpdate(ItemBase):
-    pass
-
-# Esquema que se devuelve al cliente
 class Item(ItemBase):
     id: int
+
+    class Config:
+        orm_mode = True
+
+class CartItemBase(BaseModel):
+    product_id: int
+    quantity: int
+
+class CartItemCreate(CartItemBase):
+    pass
+
+class CartItemUpdate(BaseModel):
+    quantity: int
+
+class CartItem(CartItemBase):
+    id: int
+    product: Item
 
     class Config:
         orm_mode = True
